@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+        - name: story
+          image: itzminos/kub-data:error
+          env:
+            - name: STORY_FOLDER
+              valueFrom:
+                configMapKeyRef:
+                  name: data-env
+                  key: folder
+          volumeMounts:
+            - mountPath: /app/story
+              name: story-volume
+      volumes:
+        - name: story-volume
+          persistentVolumeClaim:
+            claimName: host-pvc
+        #  csi:
+          #  driver: efs.csi.aws.com
+          #  volumeHandle: fs-0a8b3b3b
+          #  readOnly: false
+        #  hostPath:
+          #  path: /data
+          #  type: DirectoryOrCreate
+         # emptyDir: {}
+        

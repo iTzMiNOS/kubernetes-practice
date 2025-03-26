@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      containers:
+      - name: users
+        image: itzminos/kub-net-user:latest
+        env:
+        - name: AUTH_URL
+          value: "auth-service.default"
+        #  value: "10.101.4.157"
+      #  ports:
+      #  - containerPort: 8080

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tasks
+  template:
+    metadata:
+      labels:
+        app: tasks
+    spec:
+      containers:
+      - name: tasks
+        image: itzminos/kub-net-task:latest
+        env:
+        - name: TASKS_FOLDER
+          value: tasks
+        - name: AUTH_URL
+          value: "auth-service.default"
+        #  value: "10.101.4.157"
+      #  ports:
+      #  - containerPort: 8080
